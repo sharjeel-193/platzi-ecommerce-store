@@ -2,24 +2,27 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { FiSearch, FiUser, FiShoppingCart, FiMenu, FiLayers} from 'react-icons/fi';
+import { FiSearch, FiUser, FiShoppingCart, FiMenu } from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
 import MobileSidebar from '../MobileSidebar';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isDesktopSearchActive, setIsDesktopSearchActive] = useState(false);
     const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
-    const [categories, setCategories] = useState([])
-    const [error, setError] = useState(null)
+    const [categories, setCategories] = useState([]);
+    const [error, setError] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(''); 
 
-    const mobileSearchRef = useRef(null); // Ref for mobile search bar
+    const router = useRouter();
+
+    const mobileSearchRef = useRef(null);
     const desktopSearchRef = useRef(null);
     const mobileSearchButtonRef = useRef(null);
-    const desktopSearchButttonRef = useRef(null);
+    const desktopSearchButtonRef = useRef(null);
     
-
     const handleToggleSidebar = () => {
         setIsSidebarOpen((prev) => !prev);
     };
@@ -31,26 +34,35 @@ const Navbar = () => {
         setIsMobileSearchActive((prev) => !prev);
     };
 
+    const handleSearchSubmit = (e) => {
+        e.preventDefault(); // Prevent the default form submission
+        if (searchTerm.trim()) {
+            router.push(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+        }
+        setSearchTerm('')
+    };
+
     // Fetch categories from internal API route
     useEffect(() => {
         const fetchCategories = async () => {
-        try {
-            const res = await fetch('/api/categories');
-            const data = await res.json();
+            try {
+                const res = await fetch('/api/categories');
+                const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(`Failed to fetch categories: ${res.statusText}`);
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch categories: ${res.statusText}`);
+                }
+
+                setCategories(data);
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+                setError('Failed to load categories');
             }
-
-            setCategories(data);
-        } catch (error) {
-            console.error('Error fetching categories:', error);
-            setError('Failed to load categories');
-        }
         };
 
         fetchCategories();
     }, []);
+
     // Close sidebar or search when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -66,7 +78,7 @@ const Navbar = () => {
                 isDesktopSearchActive && 
                 desktopSearchRef.current && 
                 !desktopSearchRef.current.contains(event.target) &&
-                !desktopSearchButttonRef.current.contains(event.target)
+                !desktopSearchButtonRef.current.contains(event.target)
             ) {
                 setIsDesktopSearchActive(false); // Hide desktop search bar if clicked outside
             }
@@ -94,7 +106,7 @@ const Navbar = () => {
                         {/* Desktop Icons Section */}
                         <div className="hidden md:flex space-x-4 items-center">
                             {/* Sliding Search Bar (Desktop) */}
-                            <div className="relative flex items-center" >
+                            <form onSubmit={handleSearchSubmit} className="relative flex items-center">
                                 <div
                                     ref={desktopSearchRef}
                                     className={`absolute right-0 bg-gray-200 rounded-full py-2 px-2 transition-all duration-300 ease-in-out ${isDesktopSearchActive ? 'w-64 opacity-100' : 'w-0 opacity-0'}`}
@@ -103,17 +115,19 @@ const Navbar = () => {
                                         type="text"
                                         className="w-full bg-transparent outline-none text-black"
                                         placeholder="Search..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
                                     />
                                 </div>
-                            </div>
+                                
+                            </form>
                             <button
                                 onClick={handleToggleDesktopSearch}
                                 className={`focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full ${!isDesktopSearchActive ? 'text-primary bg-transparent' : 'text-white bg-secondary p-2 rounded-full'}`}
-                                ref={desktopSearchButttonRef}
+                                ref={desktopSearchButtonRef}
                             >
                                 <FiSearch size={24} />
                             </button>
-
 
                             <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
                                 <FiShoppingCart size={24} /> 
@@ -155,7 +169,6 @@ const Navbar = () => {
                         <div className="absolute top-4 right-4 hidden md:block">
                             <ThemeSwitcher />
                         </div>
-                        
                     </div>
                 </div>
 
@@ -166,11 +179,15 @@ const Navbar = () => {
                         isMobileSearchActive ? 'max-h-20 opacity-100 py-2' : 'max-h-0 opacity-0 py-0'
                     }`}
                 >
-                    <input
-                        type="text"
-                        className="w-full py-2 px-4 bg-gray-200 rounded-full outline-none text-black"
-                        placeholder="Search for products..."
-                    />
+                    <form onSubmit={handleSearchSubmit}>
+                        <input
+                            type="text"
+                            className="w-full py-2 px-4 bg-gray-200 rounded-full outline-none text-black"
+                            placeholder="Search for products..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)} // Update search term
+                        />
+                    </form>
                 </div>
 
                 {/* Category Bar */}
@@ -195,8 +212,6 @@ const Navbar = () => {
                         )}
                     </div>
                 )}
-
-
             </div>
 
             {/* Sidebar */}

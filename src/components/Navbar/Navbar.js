@@ -5,17 +5,20 @@ import Image from 'next/image';
 import { FiSearch, FiUser, FiShoppingCart, FiMenu, FiLayers} from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
 import MobileSidebar from '../MobileSidebar';
+import Link from 'next/link';
 
 const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isDesktopSearchActive, setIsDesktopSearchActive] = useState(false);
     const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
+    const [categories, setCategories] = useState([])
+    const [error, setError] = useState(null)
+
     const mobileSearchRef = useRef(null); // Ref for mobile search bar
     const desktopSearchRef = useRef(null);
     const mobileSearchButtonRef = useRef(null);
     const desktopSearchButttonRef = useRef(null);
-    const [isMblCategoryOpen, setIsMblCategoryOpen] = useState(false);
-    const [isMblAccountOpen, setIsMblAccountOpen] = useState(false);
+    
 
     const handleToggleSidebar = () => {
         setIsSidebarOpen((prev) => !prev);
@@ -28,6 +31,26 @@ const Navbar = () => {
         setIsMobileSearchActive((prev) => !prev);
     };
 
+    // Fetch categories from internal API route
+    useEffect(() => {
+        const fetchCategories = async () => {
+        try {
+            const res = await fetch('/api/categories');
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(`Failed to fetch categories: ${res.statusText}`);
+            }
+
+            setCategories(data);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+            setError('Failed to load categories');
+        }
+        };
+
+        fetchCategories();
+    }, []);
     // Close sidebar or search when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -61,10 +84,12 @@ const Navbar = () => {
                 <div className='w-full bg-background-light dark:bg-background-dark'>
                     <div className='md:w-10/12 w-11/12 mx-auto flex items-center justify-between p-4 text-primary'>
                         {/* Logo Section */}
-                        <div className="flex items-center">
-                            <Image src={'/logo.png'} alt='MarketViz Logo' width={42} height={36} />
-                            <h1 className='text-primary font-oswald ml-2'>SHOP SPHERE</h1>
-                        </div>
+                        <Link href={'/'}>
+                            <div className="flex items-center">
+                                <Image src={'/logo.png'} alt='MarketViz Logo' width={42} height={36} />
+                                <h1 className='text-primary font-oswald ml-2'>SHOP SPHERE</h1>
+                            </div>
+                        </Link>
 
                         {/* Desktop Icons Section */}
                         <div className="hidden md:flex space-x-4 items-center">
@@ -149,9 +174,29 @@ const Navbar = () => {
                 </div>
 
                 {/* Category Bar */}
-                <div className='bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark p-2 text-center font-oswald hidden md:block'>
-                    CATEGORY 1 - CATEGORY 2
-                </div>
+                {categories && (
+                    <div className='bg-surface-light dark:bg-surface-dark text-text-light dark:text-text-dark p-2 text-center font-oswald hidden md:block'>
+                        {categories.length > 0 ? (
+                            categories.map((category) => {
+                                // Create a slug from the category name
+                                const slug = category.name.toLowerCase().replace(/\s+/g, '-'); // Replace spaces with hyphens
+                                return (
+                                    <Link 
+                                        key={category.id} 
+                                        href={`/category/${slug}`} 
+                                        className='mx-2 p-2 hover:text-secondary rounded transition-colors duration-200'
+                                    >
+                                        {category.name.toUpperCase()}
+                                    </Link>
+                                );
+                            })
+                        ) : (
+                            error || 'No Categories Available'
+                        )}
+                    </div>
+                )}
+
+
             </div>
 
             {/* Sidebar */}

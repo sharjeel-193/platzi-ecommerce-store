@@ -86,7 +86,7 @@ const SearchResultsPage = ({ searchParams }) => {
     return (
         <div className="w-11/12 md:w-10/12 mx-auto grid grid-cols-1 md:grid-cols-4 gap-4 py-4 px-0 text-text-light dark:text-text-dark">
             <div className="my-4 w-full sticky top-20 pb-4 md:static md:top-0 z-40 bg-background-light dark:bg-background-dark">
-                <Filters onFilterChange={handleFilterChange} />
+                <Filters onFilterChange={handleFilterChange} wantCategory wantPriceRange wantSortOption />
             </div>
             <div className="col-span-1 md:col-span-3">
                 <h2 className="text-xl font-bold mb-2">{queryParam ? `Search for: ${queryParam}` : 'Shop'}</h2>

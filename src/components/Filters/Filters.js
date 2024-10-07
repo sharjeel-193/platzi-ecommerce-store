@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const Filters = ({ onFilterChange }) => {
+const Filters = ({ wantCategory, wantPriceRange, wantSortOption, onFilterChange }) => {
     const [category, setCategory] = useState("all");
     const [priceRange, setPriceRange] = useState("all");
     const [sortOption, setSortOption] = useState("not_specific");
@@ -33,73 +33,80 @@ const Filters = ({ onFilterChange }) => {
             <div className="flex flex-row md:flex-col mb-4 overflow-x-auto whitespace-nowrap md:whitespace-normal scrollbar-hide">
                 
                 {/* Category Filter */}
-                <div className="hidden md:flex flex-col m-2">
-                    <label className="block mb-2">Category:</label>
-                    <div className="flex flex-col">
-                        {["all", "clothes", "electronics", "furniture", "shoes", "miscellaneous"].map((cat) => (
-                            <label key={cat} className="flex items-center mb-2">
-                                <input
-                                    type="radio"
-                                    value={cat}
-                                    checked={category === cat}
-                                    onChange={() => setCategory(cat)}
-                                    className="mr-2"
-                                />
-                                {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                            </label>
-                        ))}
+                {wantCategory &&
+                <>
+                    <div className="hidden md:flex flex-col m-2">
+                        <label className="block mb-2">Category:</label>
+                        <div className="flex flex-col">
+                            {["all", "clothes", "electronics", "furniture", "shoes", "miscellaneous"].map((cat) => (
+                                <label key={cat} className="flex items-center mb-2">
+                                    <input
+                                        type="radio"
+                                        value={cat}
+                                        checked={category === cat}
+                                        onChange={() => setCategory(cat)}
+                                        className="mr-2"
+                                    />
+                                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                </label>
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className="md:hidden m-2">
-                    <select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
-                        className="border rounded-md p-2 text-text-light font-poppins"
-                    >
-                        <option value="all">Category</option>
-                        {["all", "clothes", "electronics", "furniture", "shoes", "miscellaneous"].map((cat) => (
-                            <option key={cat} value={cat}>
-                                {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                    <div className="md:hidden m-2">
+                        <select
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                            className="border rounded-md p-2 text-text-light font-poppins"
+                        >
+                            <option value="all">Category</option>
+                            {["all", "clothes", "electronics", "furniture", "shoes", "miscellaneous"].map((cat) => (
+                                <option key={cat} value={cat}>
+                                    {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </>}
 
                 {/* Price Range Filter */}
-                <div className="hidden md:flex flex-col m-2">
-                    <label className="block mb-2">Price Range:</label>
-                    <div className="flex flex-wrap gap-2">
-                        {priceRanges.map((range) => (
-                            <button
-                                key={range.value}
-                                onClick={() => setPriceRange(range.value)}
-                                className={`px-4 py-2 rounded-full border ${
-                                    priceRange === range.value
-                                        ? "bg-primary text-text-light dark:text-text-dark"
-                                        : "bg-transparent text-surface-dark border-surface-dark dark:text-surface-light dark:border-surface-light"
-                                } transition-colors duration-200`}
-                            >
-                                {range.label}
-                            </button>
-                        ))}
+                {wantPriceRange &&
+                <>
+                    <div className="hidden md:flex flex-col m-2">
+                        <label className="block mb-2">Price Range:</label>
+                        <div className="flex flex-wrap gap-2">
+                            {priceRanges.map((range) => (
+                                <button
+                                    key={range.value}
+                                    onClick={() => setPriceRange(range.value)}
+                                    className={`px-4 py-2 rounded-full border ${
+                                        priceRange === range.value
+                                            ? "bg-primary text-text-light dark:text-text-dark"
+                                            : "bg-transparent text-surface-dark border-surface-dark dark:text-surface-light dark:border-surface-light"
+                                    } transition-colors duration-200`}
+                                >
+                                    {range.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
-                <div className="md:hidden m-2">
-                    <select
-                        value={priceRange}
-                        onChange={(e) => setPriceRange(e.target.value)}
-                        className="border rounded-md p-2 text-text-light font-poppins"
-                    >
-                        <option value="all">Price Range</option>
-                        {priceRanges.map((range) => (
-                            <option key={range.value} value={range.value}>
-                                {range.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                    <div className="md:hidden m-2">
+                        <select
+                            value={priceRange}
+                            onChange={(e) => setPriceRange(e.target.value)}
+                            className="border rounded-md p-2 text-text-light font-poppins"
+                        >
+                            <option value="all">Price Range</option>
+                            {priceRanges.map((range) => (
+                                <option key={range.value} value={range.value}>
+                                    {range.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </>}
 
                 {/* Sort Dropdown */}
+                {wantSortOption &&
                 <div className="m-2">
                     <label className="hidden md:block mb-1">Sort By:</label>
                     <select
@@ -114,7 +121,7 @@ const Filters = ({ onFilterChange }) => {
                             </option>
                         ))}
                     </select>
-                </div>
+                </div>}
             </div>
         </div>
     );

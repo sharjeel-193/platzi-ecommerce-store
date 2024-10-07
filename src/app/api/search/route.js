@@ -1,31 +1,37 @@
-// src/app/api/search/route.js
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-export async function GET(request) {
-    const { searchParams } = new URL(request.url);
-    const query = searchParams.get('query'); // Get the query parameter
-
-    if (!query) {
-        return NextResponse.json(
-            { error: 'Query is required' }, 
-            { status: 400 }
-        );
-    }
+export async function GET(req) {
+    const { searchParams } = new URL(req.url); // Parse URL and get search params
+    const query = searchParams.get("query");   // Get the 'query' parameter from searchParams
 
     try {
-        const response = await fetch(`${process.env.PLATZI_API_URL}/products/?title=${encodeURIComponent(query)}`);
-        const data = await response.json();
+        // Base URL for the API
+        let url = `${process.env.PLATZI_API_URL}/products`;
 
-        if (!response.ok) {
-            throw new Error(`Failed to fetch search results: ${response.statusText}`);
+        // If there is a query, modify the URL to filter products by title
+        if (query) {
+            url += `?title=${encodeURIComponent(query)}`;
         }
 
-        return NextResponse.json(data);
+        // Fetch data from the external API
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Check if the response is not okay
+        if (!response.ok) {
+            throw new Error("Failed to fetch products");
+        }
+
+        // Filter out products with images from 'placeimg.com'
+        const filteredProducts = data.filter(product => {
+            return !product.images.some(image => image.includes('abc.com'));
+        });
+
+        // Return the filtered products as JSON
+        return NextResponse.json(filteredProducts);
     } catch (error) {
-        console.error('Error fetching search results:', error);
-        return NextResponse.json(
-            { error: 'Failed to load search results' }, 
-            { status: 500 }
-        );
+        // Handle errors and return a 500 response with an error message
+        console.error("Error fetching products:", error);
+        return NextResponse.json({ message: "Failed to load products" }, { status: 500 });
     }
 }

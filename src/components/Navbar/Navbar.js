@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { FiSearch, FiUser, FiShoppingCart, FiMenu } from 'react-icons/fi';
+import { FiSearch, FiUser, FiShoppingCart, FiMenu, FiShoppingBag } from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
 import MobileSidebar from '../MobileSidebar';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isDesktopSearchActive, setIsDesktopSearchActive] = useState(false);
     const [isMobileSearchActive, setIsMobileSearchActive] = useState(false);
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState(null);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState(''); 
 
@@ -37,7 +37,7 @@ const Navbar = () => {
     const handleSearchSubmit = (e) => {
         e.preventDefault(); // Prevent the default form submission
         if (searchTerm.trim()) {
-            router.push(`/search?query=${encodeURIComponent(searchTerm.trim())}`);
+            router.push(`/shop?query=${encodeURIComponent(searchTerm.trim())}`);
         }
         setSearchTerm('')
     };
@@ -91,7 +91,7 @@ const Navbar = () => {
     }, [isMobileSearchActive, isDesktopSearchActive]);
 
     return (
-        <header className='w-full'>
+        <header className='w-full fixed top-0 z-50'>
             <div className='w-full'>
                 <div className='w-full bg-background-light dark:bg-background-dark'>
                     <div className='md:w-10/12 w-11/12 mx-auto flex items-center justify-between p-4 text-primary'>
@@ -128,6 +128,14 @@ const Navbar = () => {
                             >
                                 <FiSearch size={24} />
                             </button>
+
+                            
+
+                            <Link href="/shop">
+                                <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
+                                    <FiShoppingBag size={24} />
+                                </button>
+                            </Link>
 
                             <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
                                 <FiShoppingCart size={24} /> 

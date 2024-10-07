@@ -19,3 +19,38 @@
 *{
     transition: all 0.3s ease-in-out;
 }
+
+/* src/styles/globals.css or appropriate CSS file */
+.range-slider {
+    position: relative;
+    height: 6px;
+}
+
+.range-slider input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    margin: 0;
+}
+
+.range-slider .range-min {
+    position: absolute;
+    pointer-events: none; /* Prevent pointer events to allow clicks on the track */
+    z-index: 2; /* Ensure the min handle is above the track */
+}
+
+.range-slider .range-max {
+    position: absolute;
+    pointer-events: none; /* Prevent pointer events to allow clicks on the track */
+    z-index: 1; /* Ensure the max handle is below the track */
+}
+
+.range-slider .slider-track {
+    position: absolute;
+    height: 6px;
+    background: #d3d3d3;
+    border-radius: 3px;
+    top: 0;
+    left: var(--min-percent);
+    right: calc(100% - var(--max-percent));
+}
+

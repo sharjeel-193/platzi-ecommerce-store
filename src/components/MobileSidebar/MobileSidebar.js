@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import { FiShoppingCart, FiUser, FiLayers } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiLayers, FiShoppingBag } from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
+import Link from 'next/link';
 
 const MobileSidebar = ({ open, toggleSidebar }) => {
     const [isMblCategoryOpen, setIsMblCategoryOpen] = useState(false);
@@ -51,6 +52,12 @@ const MobileSidebar = ({ open, toggleSidebar }) => {
                         <li><a href="#" className="block py-2">Category 3</a></li>
                     </ul>
                 </nav>
+
+                <Link href="/shop">
+                    <button className="mt-4 flex items-center">
+                        <FiShoppingBag size={24} className="mr-2" /> Shop
+                    </button>
+                </Link>
 
                 {/* Shopping Cart Button */}
                 <button onClick={() => console.log('Cart clicked')} className="mt-4 flex items-center">

@@ -11,6 +11,9 @@ module.exports = {
     darkMode: 'class',
     theme: {
         extend: {
+            animation: {
+                'spin-slower': 'spin 20s linear infinite', // Slow down the spin to 3 seconds per rotation
+            },
             fontFamily: {
                 // poppins: ['Poppins', ...fontFamily.sans], // Ensure this includes the default sans serif as fallback
                 poppins: ['Poppins', ...fontFamily.sans],

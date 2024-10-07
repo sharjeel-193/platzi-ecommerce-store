@@ -3,14 +3,19 @@ import { NextResponse } from "next/server";
 export async function GET(req) {
     const { searchParams } = new URL(req.url); // Parse URL and get search params
     const query = searchParams.get("query");   // Get the 'query' parameter from searchParams
+    const category = searchParams.get("category");
 
     try {
         // Base URL for the API
-        let url = `${process.env.PLATZI_API_URL}/products`;
+        let url = `${process.env.PLATZI_API_URL}/products/?`;
 
         // If there is a query, modify the URL to filter products by title
         if (query) {
-            url += `?title=${encodeURIComponent(query)}`;
+            url += `title=${encodeURIComponent(query)}&`;
+        }
+
+        if (category) {
+            url += `categoryId=${encodeURIComponent(category)}&`;
         }
 
         // Fetch data from the external API

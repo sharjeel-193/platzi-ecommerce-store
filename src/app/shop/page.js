@@ -89,7 +89,7 @@ const SearchResultsPage = ({ searchParams }) => {
                 <Filters onFilterChange={handleFilterChange} wantCategory wantPriceRange wantSortOption />
             </div>
             <div className="col-span-1 md:col-span-3">
-                <h2 className="text-xl font-bold mb-2">{queryParam ? `Search for: ${queryParam}` : 'Shop'}</h2>
+                <h2 className="text-4xl font-light mb-8 mt-2">{queryParam ? `SEARCH FOR: ${queryParam}` : 'SHOP'}</h2>
                 {loading ? (
                     <div className='w-full text-center'>
                         <Loader />

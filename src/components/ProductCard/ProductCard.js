@@ -27,7 +27,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 <div className="flex flex-col flex-grow"> {/* Use flex-grow to fill remaining space */}
                     <div className="mb-auto"> {/* Ensures this section takes only needed space */}
                         {/* Product Title */}
-                        <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">
+                        <h3 className="text-xl text-gray-800 dark:text-gray-200">
                             {product.title}
                         </h3>
 
@@ -36,7 +36,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                             <p className="text-primary font-bold text-lg">
                                 ${product.price.toFixed(2)}
                             </p>
-                            <span className="border border-gray-300 rounded-full px-3 py-1 text-sm text-gray-700 dark:bg-gray-800 dark:text-gray-300"> {/* Category Chip */}
+                            <span className="border border-gray-300 rounded-full px-3 py-1 text-xs font-light text-gray-700 dark:bg-gray-800 dark:text-gray-300"> {/* Category Chip */}
                                 {product.category.name}
                             </span>
                         </div>

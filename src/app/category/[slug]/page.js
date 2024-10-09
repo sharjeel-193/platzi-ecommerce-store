@@ -111,7 +111,7 @@ const CategoryPage = () => {
                 <Filters onFilterChange={handleFilterChange} wantPriceRange wantSortOption />
             </div>
             <div className="col-span-1 md:col-span-3">
-                <h2 className="text-xl font-bold mb-2">{params.slug.toLocaleUpperCase()}</h2>
+                <h2 className="text-4xl font-light mt-2 mb-8">{params.slug.toUpperCase()}</h2>
                 {loading ? (
                     <div className='w-full text-center'>
                         <Loader />

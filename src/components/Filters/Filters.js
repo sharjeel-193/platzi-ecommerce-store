@@ -27,7 +27,7 @@ const Filters = ({ wantCategory, wantPriceRange, wantSortOption, onFilterChange 
 
     return (
         <div className="sticky md:top-36 w-full bg-white dark:bg-gray-800 p-4 shadow-md rounded-lg z-40">
-            <h2 className="text-lg font-bold mb-2">Filters</h2>
+            <h2 className="text-xl font-light mb-2">Filters</h2>
 
             {/* Container with horizontal scroll on mobile */}
             <div className="flex flex-row md:flex-col mb-4 overflow-x-auto whitespace-nowrap md:whitespace-normal scrollbar-hide">

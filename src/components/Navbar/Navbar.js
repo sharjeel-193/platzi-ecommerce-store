@@ -91,7 +91,7 @@ const Navbar = () => {
     }, [isMobileSearchActive, isDesktopSearchActive]);
 
     return (
-        <header className='w-full fixed top-0 z-50'>
+        <header className='w-full fixed top-0 z-50 shadow-lg'>
             <div className='w-full'>
                 <div className='w-full bg-background-light dark:bg-background-dark'>
                     <div className='md:w-10/12 w-11/12 mx-auto flex items-center justify-between p-4 text-primary'>
@@ -223,7 +223,7 @@ const Navbar = () => {
             </div>
 
             {/* Sidebar */}
-            <MobileSidebar open={isSidebarOpen} toggleSidebar={handleToggleSidebar} />
+            <MobileSidebar open={isSidebarOpen} toggleSidebar={handleToggleSidebar} categories={categories} />
         </header>
     );
 };

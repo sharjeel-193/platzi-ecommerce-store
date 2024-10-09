@@ -5,7 +5,7 @@ import { FiShoppingCart, FiUser, FiLayers, FiShoppingBag } from 'react-icons/fi'
 import ThemeSwitcher from '../ThemeSwitcher';
 import Link from 'next/link';
 
-const MobileSidebar = ({ open, toggleSidebar }) => {
+const MobileSidebar = ({ open, toggleSidebar, categories }) => {
     const [isMblCategoryOpen, setIsMblCategoryOpen] = useState(false);
     const [isMblAccountOpen, setIsMblAccountOpen] = useState(false);
 
@@ -31,27 +31,35 @@ const MobileSidebar = ({ open, toggleSidebar }) => {
                 </div>
 
                 {/* Categories Section */}
-                <button
-                    onClick={() => setIsMblCategoryOpen((prev) => !prev)}
-                    className="w-full text-left flex items-center py-2 transition-all duration-300 ease-in-out"
-                >
-                    <FiLayers className="mr-2" size={24} /> {/* Icon for Categories */}
-                    <span className="flex-grow">Categories</span>
-                    <span>{isMblCategoryOpen ? '▲' : '▼'}</span>
-                </button>
+                {categories &&
+                    <>
+                        <button
+                        onClick={() => setIsMblCategoryOpen((prev) => !prev)}
+                        className="w-full text-left flex items-center py-2 transition-all duration-300 ease-in-out"
+                    >
+                        <FiLayers className="mr-2" size={24} /> {/* Icon for Categories */}
+                        <span className="flex-grow">Categories</span>
+                        <span>{isMblCategoryOpen ? '▲' : '▼'}</span>
+                    </button>
 
-                <nav 
-                    className={`pl-4 mt-2 overflow-hidden transition-all duration-300 ease-in-out ${
-                        isMblCategoryOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                    }`}
-                    style={{ transitionProperty: 'max-height, opacity' }}
-                >
-                    <ul>
-                        <li><a href="#" className="block py-2">Category 1</a></li>
-                        <li><a href="#" className="block py-2">Category 2</a></li>
-                        <li><a href="#" className="block py-2">Category 3</a></li>
-                    </ul>
-                </nav>
+                    <nav 
+                        className={`pl-4 mt-2 overflow-hidden transition-all duration-300 ease-in-out flex flex-col gap-4 ${
+                            isMblCategoryOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                        }`}
+                        style={{ transitionProperty: 'max-height, opacity' }}
+                    >
+                        {
+                            categories.map((category) => {
+                                const slug = category.name.toLowerCase().replace(/\s+/g, '-');
+                                return (
+                                    <Link href={`/category/${slug}`} key={category.id}>
+                                        {category.name}
+                                    </Link>
+                                )
+                            })
+                        }
+                    </nav>
+                </>}
 
                 <Link href="/shop">
                     <button className="mt-4 flex items-center">

@@ -20,6 +20,10 @@ const categories = [
     {
         name: 'shoes',
         id: 4
+    },
+    {
+        name: 'miscellaneous',
+        id: 5
     }
 ]
 const CategoryPage = () => {

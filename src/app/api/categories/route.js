@@ -10,7 +10,7 @@ export async function GET(req) {
             throw new Error('Failed to fetch categories');
         }
 
-        const firstFourCategories = data.slice(0, 4);
+        const firstFourCategories = data.slice(0, 5);
 
         return NextResponse.json(firstFourCategories); 
     } catch (error) {

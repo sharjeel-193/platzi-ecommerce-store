@@ -69,7 +69,7 @@ export default function CartPage() {
 
     return (
         <div className="w-10/12 mx-auto py-12 text-text-light dark:text-text-dark">
-            <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+            <h1 className="text-4xl font-light mt-2 mb-8">Your Shopping Cart</h1>
 
             {loading ? (
                 <div className='w-full text-center'>
@@ -165,12 +165,14 @@ export default function CartPage() {
                                     <p className="text-2xl font-light">Total Price: <span className='font-bold'>${finalPrice.toFixed(2)}</span></p>
                                 </div>
                                 <div className='w-full flex flex-col md:flex-row justify-end gap-2'>
-                                    <button
-                                        className="bg-secondary text-white px-4 py-2 rounded hover:bg-primary w-full md:w-fit"
-                                        disabled={finalPrice === 0}
-                                    >
-                                        Proceed to Checkout
-                                    </button>
+                                    <Link href={"/checkout"} passHref>
+                                        <button
+                                            className="bg-secondary text-white px-4 py-2 rounded hover:bg-primary w-full md:w-fit"
+                                            disabled={finalPrice === 0}
+                                        >
+                                            Proceed to Checkout
+                                        </button>
+                                    </Link>
                                     <button
                                         className="bg-error-dark text-white px-4 py-2 rounded hover:bg-error-light w-full md:w-fit"
                                         onClick={clearCart}

@@ -6,6 +6,7 @@ import { CartProvider } from "@/context/CartContext";
 import { ThemeProvider } from "@/context/ThemeContext"; 
 import { Oswald, Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { StripeProvider } from "@/context/StripeContext";
 
 // Load Google fonts
 const oswald = Oswald({
@@ -26,6 +27,7 @@ export const metadata = {
     description: "Explore the best deals on Shop Sphere, your go-to online marketplace.",
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}> {/* Apply Poppins font */}
@@ -34,9 +36,12 @@ export default function RootLayout({ children }) {
                 <CartProvider>
                     <div className="w-full min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
                         <Navbar />
-                        <main className="flex-grow pt-20 md:pt-36 relative">
-                            {children}
-                        </main>
+                        <StripeProvider >
+                            <main className="flex-grow pt-20 md:pt-36 relative">
+                                {children}
+                            </main>
+                        </StripeProvider>
+                        
                         <footer>
                             {/* Add footer content here */}
                         </footer>

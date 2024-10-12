@@ -4,3 +4,6 @@ export { default as MobileSidebar } from './MobileSidebar';
 export { default as ProductCard } from './ProductCard';
 export { default as Filters } from './Filters';
 export { default as Loader } from './Loader';
+export { default as PaymentForm } from './PaymentForm';
+export { default as Modal } from './Modal';
+export { default as CheckoutForm } from './CheckoutForm';

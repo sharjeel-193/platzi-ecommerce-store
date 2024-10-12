@@ -1,11 +1,20 @@
 import Image from 'next/image';
 import { FaShoppingCart } from 'react-icons/fa'; // Importing an icon from react-icons
 import Link from 'next/link'; // Import Link from next/link
+import { useContext } from 'react';
+import { CartContext } from '@/context/CartContext';
 
 const ProductCard = ({ product, onAddToCart }) => {
     const imageUrl = Array.isArray(product.images) && product.images.length > 0
         ? product.images[0].replace(/[\[\]"]/g, '').trim() // Remove brackets and quotes if they exist
         : '/fallback-image.jpg'; // Provide a fallback image if there is no valid image
+    
+    const { addToCart } = useContext(CartContext);
+
+    const handleAddToCart = (e) => {
+        e.preventDefault();
+        addToCart(product, 1);
+    }
 
     return (
         <Link href={`/product/${product.id}`} passHref> {/* Link to the details page */}
@@ -43,10 +52,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                     </div>
                     {/* Add to Cart Button */}
                     <button
-                        onClick={(e) => { // Prevent the link click when button is clicked
-                            e.stopPropagation();
-                            onAddToCart(product);
-                        }}
+                        onClick={handleAddToCart}
                         className="flex items-center justify-center mt-4 bg-secondary text-white py-2 px-4 rounded-md hover:bg-primary hover:font-bold transition-colors duration-200"
                     >
                         <FaShoppingCart className="mr-2" /> {/* Cart icon */}

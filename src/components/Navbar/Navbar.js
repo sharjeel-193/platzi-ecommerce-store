@@ -137,9 +137,11 @@ const Navbar = () => {
                                 </button>
                             </Link>
 
-                            <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
-                                <FiShoppingCart size={24} /> 
-                            </button>
+                            <Link href={"/cart"}>
+                                <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
+                                    <FiShoppingCart size={24} /> 
+                                </button>
+                            </Link>
 
                             {/* Account Icon */}
                             <div className="relative group">

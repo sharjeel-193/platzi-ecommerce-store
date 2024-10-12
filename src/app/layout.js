@@ -1,9 +1,11 @@
 // src/app/layout.js
 
-import "./globals.css"; // Import your global styles
-import { Navbar } from "@/components"; // Assuming Navbar is in the components directory
-import { ThemeProvider } from "@/context/ThemeContext"; // Assuming you are using a custom ThemeProvider
+import "./globals.css"; 
+import { Navbar } from "@/components"; 
+import { CartProvider } from "@/context/CartContext";
+import { ThemeProvider } from "@/context/ThemeContext"; 
 import { Oswald, Poppins } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 
 // Load Google fonts
 const oswald = Oswald({
@@ -29,15 +31,18 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.className}> {/* Apply Poppins font */}
         <body>
             <ThemeProvider> {/* Assuming ThemeProvider is necessary */}
-                <div className="w-full min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
-                      <Navbar />
-                      <main className="flex-grow pt-20 md:pt-36 relative">
-                          {children}
-                      </main>
-                      <footer>
-                          {/* Add footer content here */}
-                      </footer>
-                </div>
+                <CartProvider>
+                    <div className="w-full min-h-screen flex flex-col bg-background-light dark:bg-background-dark">
+                        <Navbar />
+                        <main className="flex-grow pt-20 md:pt-36 relative">
+                            {children}
+                        </main>
+                        <footer>
+                            {/* Add footer content here */}
+                        </footer>
+                        <Toaster position="bottom-right" reverseOrder={false} />
+                    </div>
+                </CartProvider>
             </ThemeProvider>
         </body>
     </html>

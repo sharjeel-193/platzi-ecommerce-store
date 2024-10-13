@@ -42,8 +42,8 @@ export default function RootLayout({ children }) {
                             </main>
                         </StripeProvider>
                         
-                        <footer>
-                            {/* Add footer content here */}
+                        <footer className="w-full bg-primary py-2 text-center text-white">
+                            ShopSphere 2024 | Made with &hearts; by M. Sharjeel Maqsood
                         </footer>
                         <Toaster position="bottom-right" reverseOrder={false} />
                     </div>

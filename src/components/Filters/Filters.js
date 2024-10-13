@@ -114,7 +114,7 @@ const Filters = ({ wantCategory, wantPriceRange, wantSortOption, onFilterChange 
                         onChange={(e) => setSortOption(e.target.value)}
                         className="border rounded-md p-2 text-text-light font-poppins"
                     >
-                        <option value="price_asc">Sort By</option>
+                        <option>Sort By</option>
                         {sortOptions.map((option) => (
                             <option key={option.value} value={option.value}>
                                 {option.label}

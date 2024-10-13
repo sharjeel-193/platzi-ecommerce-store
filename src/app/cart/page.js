@@ -78,12 +78,16 @@ export default function CartPage() {
             ) : (
                 <div>
                     {cart.length === 0 ? (
-                        <p className="text-center">
-                            Your cart is empty.{' '}
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <p>Your Cart is Empty</p>
                             <Link href="/shop" className="text-blue-500 underline">
-                                Continue shopping
+                                <button 
+                                    className="bg-transparent border-primary text-primary border-2 rounded-lg text-md mt-4 px-4 py-2 mx-auto hover:text-white hover:bg-primary"
+                                >
+                                    Continue to Shopping
+                                </button>
                             </Link>
-                        </p>
+                        </div>
                     ) : (
                         <>
                             <ul className="divide-y divide-gray-200">

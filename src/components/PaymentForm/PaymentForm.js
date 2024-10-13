@@ -1,14 +1,12 @@
 "use client"
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
-const PaymentForm = ({ totalAmount }) => {
+const PaymentForm = ({ totalAmount, finalizeOrder }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,9 +30,8 @@ const PaymentForm = ({ totalAmount }) => {
             } else {
                 toast.success("Payment successful!");
 
-                // Here you'd normally call your backend to process the payment
-                router.push("/order-confirmation");
                 setLoading(false);
+                finalizeOrder();
             }
         } catch (error) {
             toast.error("Payment failed. Try again.");

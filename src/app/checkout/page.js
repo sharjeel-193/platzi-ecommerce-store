@@ -5,8 +5,6 @@ import { CartContext } from "../../context/CartContext";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FiTrash } from "react-icons/fi";
-import toast from "react-hot-toast";
 import { PaymentForm, Modal, CheckoutForm } from "@/components"; 
 
 export default function CheckoutPage() {
@@ -16,6 +14,7 @@ export default function CheckoutPage() {
     const [error, setError] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isModalOpen, setModalOpen] = useState(false);
+    const [availableItems, setAvailableItems] = useState([]);
     const router = useRouter();
 
     // Fetch all products and filter available items
@@ -47,6 +46,8 @@ export default function CheckoutPage() {
                 products.some((product) => product.id === item.product.id)
             );
 
+            setAvailableItems(available)
+
             const total = available.reduce(
                 (sum, item) => sum + item.product.price * item.quantity,
                 0
@@ -69,6 +70,11 @@ export default function CheckoutPage() {
         router.replace('/cart');
     }
 
+    const handleOrderPlacement = () => {
+        router.push("/order-confirmation");
+        availableItems.forEach((item) => removeFromCart(item.product, true))
+    }
+
     if (loading) {
         return (
         <div className="w-full text-center py-12">
@@ -82,12 +88,16 @@ export default function CheckoutPage() {
             <h1 className="text-4xl font-light mt-2 mb-8">Checkout</h1>
 
             {cart.length === 0 ? (
-                <p className="text-center">
-                    Your order is empty.{" "}
-                    <Link href="/shop" className="text-blue-500 underline">
-                        Continue shopping
-                    </Link>
-                </p>
+                <div className="w-full flex flex-col items-center justify-center">
+                <p>Your Order is Empty</p>
+                <Link href="/shop" className="text-blue-500 underline">
+                    <button 
+                        className="bg-transparent border-primary text-primary border-2 rounded-lg text-md mt-4 px-4 py-2 mx-auto hover:text-white hover:bg-primary"
+                    >
+                        Continue to Shopping
+                    </button>
+                </Link>
+            </div>
             ) : (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -95,33 +105,33 @@ export default function CheckoutPage() {
                         <div>
                             <h2 className="text-xl font-semibold text-primary mb-4">Order Summary</h2>
                             <ul className="divide-y divide-gray-200">
-                                {cart.map((item) => {
-                                const imageUrl = item.product.images[0]
-                                    .replace(/[\[\]"]/g, "")
-                                    .trim();
+                                {availableItems.map((item) => {
+                                    const imageUrl = item.product.images[0]
+                                        .replace(/[\[\]"]/g, "")
+                                        .trim();
 
-                                return (
-                                    <li key={item.product.id} className="flex items-center py-4">
-                                        <div className="w-16 h-16 mr-4">
-                                            <Image
-                                                src={imageUrl}
-                                                alt={item.product.title}
-                                                width={80}
-                                                height={80}
-                                                className="object-cover rounded-lg"
-                                            />
-                                        </div>
-                                        <div className="flex-grow">
-                                            <h3 className="text-lg">{item.product.title}</h3>
-                                            <p className="text-xs text-gray-500">
-                                                ${item.product.price} each
-                                            </p>
-                                            <p className="text-sm font-semibold">
-                                                Total: ${item.product.price * item.quantity}
-                                            </p>
-                                        </div>
-                                    </li>
-                                );
+                                    return (
+                                        <li key={item.product.id} className="flex items-center py-4">
+                                            <div className="w-16 h-16 mr-4">
+                                                <Image
+                                                    src={imageUrl}
+                                                    alt={item.product.title}
+                                                    width={80}
+                                                    height={80}
+                                                    className="object-cover rounded-lg"
+                                                />
+                                            </div>
+                                            <div className="flex-grow">
+                                                <h3 className="text-lg">{item.product.title}</h3>
+                                                <p className="text-xs text-gray-500">
+                                                    ${item.product.price} each
+                                                </p>
+                                                <p className="text-sm font-semibold">
+                                                    Total: ${item.product.price * item.quantity}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    );
                                 })}
                             </ul>
                             <div className="mt-4 text-lg font-semibold">
@@ -147,7 +157,7 @@ export default function CheckoutPage() {
 
             {/* Payment Modal */}
             <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} headingText={'Pay by Card'}>
-                <PaymentForm totalAmount={totalPrice} />
+                <PaymentForm totalAmount={totalPrice} finalizeOrder={handleOrderPlacement} />
             </Modal>
         </div>
     );

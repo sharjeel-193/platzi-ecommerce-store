@@ -53,11 +53,15 @@ export const CartProvider = ({ children }) => {
     };
 
     // Function to remove a product from the cart by id
-    const removeFromCart = (product) => {
+    const removeFromCart = (product, orderPlaced=false) => {
         setCart((prevCart) => prevCart.filter((item) => item.product.id !== product.id));
-        toast.error(
-            `${product.title} removed from cart`
-        )
+        if (orderPlaced){
+            toast.success('Congratulations! Order Placed!');
+        } else {
+            toast.error(
+                `${product.title} removed from cart`
+            )
+        }
     };
 
     // Function to clear the entire cart

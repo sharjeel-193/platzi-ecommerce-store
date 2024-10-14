@@ -68,9 +68,11 @@ const MobileSidebar = ({ open, toggleSidebar, categories }) => {
                 </Link>
 
                 {/* Shopping Cart Button */}
-                <button onClick={() => console.log('Cart clicked')} className="mt-4 flex items-center">
-                    <FiShoppingCart size={24} className="mr-2" /> Cart
-                </button>
+                <Link href={"/cart"}>
+                    <button className="mt-4 flex items-center">
+                        <FiShoppingCart size={24} className="mr-2" /> Cart
+                    </button>
+                </Link>
 
                 {/* Account Section */}
                 <button

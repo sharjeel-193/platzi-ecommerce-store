@@ -4,10 +4,20 @@ import Link from 'next/link'; // Import Link from next/link
 import { useContext } from 'react';
 import { CartContext } from '@/context/CartContext';
 
-const ProductCard = ({ product, onAddToCart }) => {
+const ProductCard = ({ product }) => {
+    // Validate the image URL and provide fallback if it's invalid
+    const isValidUrl = (url) => {
+        try {
+            // If the URL is relative (doesn't start with 'http' or '/'), it is invalid for next/image
+            return url.startsWith('/') || url.startsWith('http://') || url.startsWith('https://');
+        } catch (error) {
+            return false;
+        }
+    };
+
     const imageUrl = Array.isArray(product.images) && product.images.length > 0
-        ? product.images[0].replace(/[\[\]"]/g, '').trim() // Remove brackets and quotes if they exist
-        : '/fallback-image.jpg'; // Provide a fallback image if there is no valid image
+        ? (isValidUrl(product.images[0]) ? product.images[0] : '/fallback-image.jpg')
+        : '/fallback-image.jpg'; // Provide fallback if no valid image exists
     
     const { addToCart } = useContext(CartContext);
 
@@ -25,7 +35,7 @@ const ProductCard = ({ product, onAddToCart }) => {
                 {/* Product Image */}
                 <div className="w-full h-48 relative mb-4">
                     <Image
-                        src={imageUrl}
+                        src={imageUrl} // Use the resolved or fallback image URL
                         alt={product.title}
                         fill
                         className="object-cover rounded-lg"

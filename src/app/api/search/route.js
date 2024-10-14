@@ -18,6 +18,8 @@ export async function GET(req) {
             url += `categoryId=${encodeURIComponent(category)}&`;
         }
 
+        url += 'offset=0&limit=24'
+
         // Fetch data from the external API
         const response = await fetch(url);
         const data = await response.json();
@@ -31,9 +33,10 @@ export async function GET(req) {
         const filteredProducts = data.filter(product => {
             return !product.images.some(image => image.includes('abc.com'));
         });
+        // const first20Products = data.slice(0, 20);
 
         // Return the filtered products as JSON
-        return NextResponse.json(filteredProducts);
+        return NextResponse.json(data);
     } catch (error) {
         // Handle errors and return a 500 response with an error message
         console.error("Error fetching products:", error);

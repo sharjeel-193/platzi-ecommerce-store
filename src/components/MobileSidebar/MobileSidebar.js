@@ -1,13 +1,16 @@
 "use client";
 
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { FiShoppingCart, FiUser, FiLayers, FiShoppingBag } from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
 import Link from 'next/link';
+import { CartContext } from '@/context/CartContext';
 
 const MobileSidebar = ({ open, toggleSidebar, categories }) => {
     const [isMblCategoryOpen, setIsMblCategoryOpen] = useState(false);
     const [isMblAccountOpen, setIsMblAccountOpen] = useState(false);
+
+    const { cart } = useContext(CartContext)
 
     const handleSidebarClick = (event) => {
         event.stopPropagation(); // Prevent click from bubbling up to the shadow area
@@ -69,22 +72,25 @@ const MobileSidebar = ({ open, toggleSidebar, categories }) => {
 
                 {/* Shopping Cart Button */}
                 <Link href={"/cart"}>
-                    <button className="mt-4 flex items-center">
+                    <button className="mt-4 flex items-center relative">
                         <FiShoppingCart size={24} className="mr-2" /> Cart
+                        {cart.length > 0 && (
+                            <span className="absolute top-[-2px] right-[-18px] h-3 w-3 bg-secondary rounded-full"></span>
+                        )}
                     </button>
                 </Link>
 
                 {/* Account Section */}
-                <button
+                {/* <button
                     onClick={() => setIsMblAccountOpen((prev) => !prev)}
                     className="w-full text-left flex items-center py-2 transition-all duration-300 ease-in-out mt-4"
                 >
-                    <FiUser className="mr-2" size={24} /> {/* Icon for Account */}
+                    <FiUser className="mr-2" size={24} />
                     <span className="flex-grow">Account</span>
                     <span>{isMblAccountOpen ? '▲' : '▼'}</span>
-                </button>
+                </button> */}
 
-                <nav 
+                {/* <nav 
                     className={`pl-4 mt-2 overflow-hidden transition-all duration-300 ease-in-out ${
                         isMblAccountOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
                     }`}
@@ -94,7 +100,7 @@ const MobileSidebar = ({ open, toggleSidebar, categories }) => {
                         <li><a href="#" className="block py-2">Login</a></li>
                         <li><a href="#" className="block py-2">Signup</a></li>
                     </ul>
-                </nav>
+                </nav> */}
             </div>
         </div>
     );

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Image from 'next/image';
 import { FiSearch, FiUser, FiShoppingCart, FiMenu, FiShoppingBag } from 'react-icons/fi';
 import ThemeSwitcher from '../ThemeSwitcher';
 import MobileSidebar from '../MobileSidebar';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { CartContext } from '@/context/CartContext';
 
 const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -22,6 +23,8 @@ const Navbar = () => {
     const desktopSearchRef = useRef(null);
     const mobileSearchButtonRef = useRef(null);
     const desktopSearchButtonRef = useRef(null);
+
+    const { cart } = useContext(CartContext);
     
     const handleToggleSidebar = () => {
         setIsSidebarOpen((prev) => !prev);
@@ -138,17 +141,20 @@ const Navbar = () => {
                             </Link>
 
                             <Link href={"/cart"}>
-                                <button className="focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
+                                <button className="relative focus:outline-none transition-all duration-300 ease-in-out hover:bg-secondary hover:p-2 hover:text-white rounded-full">
                                     <FiShoppingCart size={24} /> 
+                                    {cart.length > 0 && (
+                                        <span className="absolute top-[-7px] right-[-7px] h-3 w-3 bg-secondary rounded-full"></span>
+                                    )}
                                 </button>
+                                
                             </Link>
 
                             {/* Account Icon */}
-                            <div className="relative group">
+                            {/* <div className="relative group">
                                 <button className="focus:outline-none group-hover:bg-secondary group-hover:p-2 group-hover:text-white rounded-full">
                                     <FiUser size={24} />
                                 </button>
-                                {/* Dropdown Content */}
                                 <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-700 rounded-lg shadow-lg hidden group-hover:block">
                                     <ul className="py-2">
                                         <li>
@@ -159,7 +165,7 @@ const Navbar = () => {
                                         </li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                         {/* Mobile Menu Button and Search Icon */}
@@ -185,7 +191,7 @@ const Navbar = () => {
                 {/* Mobile Search Bar */}
                 <div
                     ref={mobileSearchRef}
-                    className={`block md:hidden w-full px-4 overflow-hidden transition-max-height duration-300 ease-in-out ${
+                    className={`block md:hidden w-full px-4 overflow-hidden transition-max-height duration-300 ease-in-out bg-background-light dark:bg-background-dark ${
                         isMobileSearchActive ? 'max-h-20 opacity-100 py-2' : 'max-h-0 opacity-0 py-0'
                     }`}
                 >
